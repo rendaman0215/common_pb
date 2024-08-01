@@ -1,0 +1,10 @@
+syntax = "proto3";
+option go_package = "/pb";
+package proto;
+
+// エラー型の定義
+message Error{
+    string type     = 1;    //  エラー種別
+    string message  = 2;    //  エラーメッセージ
+}
+

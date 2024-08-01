@@ -1,0 +1,20 @@
+/*
+* クライアントとサーバー間でやり取りするデータの定義
+*/
+syntax = "proto3";
+option go_package = "/pb";
+package proto;
+
+// 商品カテゴリ型の定義
+message Category {
+  string id = 1;     // カテゴリID
+  string name = 2;  // カテゴリ名
+}
+
+// 商品型の定義
+message Product {
+  string id = 1;                     // 商品ID
+  string name = 2;                  // 商品名
+  int32 price = 3;                  // 価格
+  optional Category category = 4;   // カテゴリ
+}

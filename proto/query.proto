@@ -1,0 +1,82 @@
+syntax = "proto3";
+option go_package = "/pb";
+package proto;
+
+// 以下のimportは、各protoファイルで定義されているものを再利用するために必要
+import "proto/error.proto";
+import "proto/models.proto";
+
+// googleから提供されているprotoファイルをimport
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+/************************************
+  * 商品カテゴリ検索用param型とResult型
+  **********************************/
+
+// 商品カテゴリ検索用param型
+message CategoryParam {
+  string id = 1;  // カテゴリID
+}
+
+// 商品カテゴリを複数取得するためのResult型
+message CategoriesResult {
+  repeated Category categories = 1;  // カテゴリリスト
+  Error error = 2;                    // エラー情報
+  google.protobuf.Timestamp timestamp = 3;  // タイムスタンプ
+}
+
+// 商品カテゴリを1件取得するためのResult型
+message CategoryResult {
+  oneof result {
+    Category category = 1;  // カテゴリ
+    Error error = 2;         // エラー情報
+  }
+  google.protobuf.Timestamp timestamp = 3;  // タイムスタンプ
+}
+
+/************************************
+  * 商品検索用param型とResult型
+  **********************************/
+// 商品検索用param型
+message ProductParam {
+  string id = 1;  // 商品ID
+  string keyword = 2;  // キーワード
+}
+
+// 商品を複数取得するためのResult型
+message ProductsResult {
+  repeated Product products = 1;  // 商品リスト
+  Error error = 2;                 // エラー情報
+  google.protobuf.Timestamp timestamp = 3;  // タイムスタンプ
+}
+
+// 商品を1件取得するためのResult型
+message ProductResult {
+  oneof result {
+    Product product = 1;  // 商品
+    Error error = 2;       // エラー情報
+  }
+  google.protobuf.Timestamp timestamp = 3;  // タイムスタンプ
+}
+
+/************************************
+  * 商品カテゴリと商品の問い合わせサービス型
+  **********************************/
+// 商品カテゴリと商品の問い合わせサービス型
+service CategoryQuery {
+  // すべての商品カテゴリを取得する
+  rpc List(google.protobuf.Empty) returns (CategoriesResult) {}
+  // 指定されたIDの商品カテゴリを取得する
+  rpc ById(CategoryParam) returns (CategoryResult) {}
+}
+
+// 商品問い合わせサービス型
+service ProductQuery {
+  // すべての商品を取得する
+  rpc List(google.protobuf.Empty) returns (ProductsResult) {}
+  // 指定されたIDの商品を取得する
+  rpc ById(ProductParam) returns (ProductResult) {}
+  // 指定されたキーワードを含む商品を取得する
+  rpc ByKeyword(ProductParam) returns (ProductsResult) {}
+}
