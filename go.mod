@@ -1,6 +1,6 @@
-module samplepb
+module github.com/rendaman0215/common_pb
 
-go 1.22.5
+go 1.22.6
 
 require (
 	google.golang.org/grpc v1.65.0

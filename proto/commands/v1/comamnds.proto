@@ -1,0 +1,119 @@
+syntax = "proto3";
+package commands.v1;
+
+// import errors
+import "errors/v1/errors.proto";
+
+// import models
+import "models/v1/models.proto";
+
+// import google protobuf
+import "google/protobuf/timestamp.proto";
+
+// specify the CRUD operation
+enum CRUD {
+  // unspecified
+  CRUD_UNSPECIFIED = 0;
+  // create
+  CRUD_CREATE = 1;
+  // update
+  CRUD_UPDATE = 2;
+  // delete
+  CRUD_DELETE = 3;
+}
+
+message CategoryCommandServiceCreateRequest {
+  string id = 1;
+  string name = 2;
+}
+
+message CategoryCommandServiceCreateResponse {
+  oneof result {
+    models.v1.Category category = 1;
+    errors.v1.Error error = 2;
+  }
+  google.protobuf.Timestamp timestamp = 3;
+}
+
+message CategoryCommandServiceUpdateRequest {
+  string id = 1;
+  string name = 2;
+}
+
+message CategoryCommandServiceUpdateResponse {
+  oneof result {
+    models.v1.Category category = 1;
+    errors.v1.Error error = 2;
+  }
+  google.protobuf.Timestamp timestamp = 3;
+}
+
+message CategoryCommandServiceDeleteRequest {
+  string id = 1;
+  string name = 2;
+}
+
+message CategoryCommandServiceDeleteResponse {
+  oneof result {
+    models.v1.Category category = 1;
+    errors.v1.Error error = 2;
+  }
+  google.protobuf.Timestamp timestamp = 3;
+}
+
+service CategoryCommandService {
+  rpc Create(CategoryCommandServiceCreateRequest) returns (CategoryCommandServiceCreateResponse);
+  rpc Update(CategoryCommandServiceUpdateRequest) returns (CategoryCommandServiceUpdateResponse);
+  rpc Delete(CategoryCommandServiceDeleteRequest) returns (CategoryCommandServiceDeleteResponse);
+}
+
+message ProductCommandServiceCreateRequest {
+  string id = 1;
+  string name = 2;
+  int32 price = 3;
+  string category_id = 4;
+}
+
+message ProductCommandServiceCreateResponse {
+  oneof result {
+    models.v1.Product product = 1;
+    errors.v1.Error error = 2;
+  }
+  google.protobuf.Timestamp timestamp = 3;
+}
+
+message ProductCommandServiceUpdateRequest {
+  string id = 1;
+  string name = 2;
+  int32 price = 3;
+  string category_id = 4;
+}
+
+message ProductCommandServiceUpdateResponse {
+  oneof result {
+    models.v1.Product product = 1;
+    errors.v1.Error error = 2;
+  }
+  google.protobuf.Timestamp timestamp = 3;
+}
+
+message ProductCommandServiceDeleteRequest {
+  string id = 1;
+  string name = 2;
+  int32 price = 3;
+  string category_id = 4;
+}
+
+message ProductCommandServiceDeleteResponse {
+  oneof result {
+    models.v1.Product product = 1;
+    errors.v1.Error error = 2;
+  }
+  google.protobuf.Timestamp timestamp = 3;
+}
+
+service ProductCommandService {
+  rpc Create(ProductCommandServiceCreateRequest) returns (ProductCommandServiceCreateResponse);
+  rpc Update(ProductCommandServiceUpdateRequest) returns (ProductCommandServiceUpdateResponse);
+  rpc Delete(ProductCommandServiceDeleteRequest) returns (ProductCommandServiceDeleteResponse);
+}

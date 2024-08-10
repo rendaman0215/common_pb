@@ -1,0 +1,82 @@
+syntax = "proto3";
+package query.v1;
+
+// import errors
+import "errors/v1/errors.proto";
+
+// import models
+import "models/v1/models.proto";
+
+// import google protobuf
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+message CategoryQueryServiceListRequest {
+  google.protobuf.Empty empty = 1;
+}
+
+// Return a list of categories
+message CategoryQueryServiceListResponse {
+  repeated models.v1.Category categories = 1;
+  errors.v1.Error error = 2;
+  google.protobuf.Timestamp timestamp = 3;
+}
+
+// Request to get a list of categories
+message CategoryQueryServiceByIdRequest {
+  string id = 1;
+}
+// Return a single category
+message CategoryQueryServiceByIdResponse {
+  oneof reesult {
+    models.v1.Category category = 1;
+    errors.v1.Error error = 2;
+  }
+  google.protobuf.Timestamp timestamp = 3;
+}
+
+service CategoryQueryService {
+  rpc List(CategoryQueryServiceListRequest) returns (CategoryQueryServiceListResponse);
+  rpc ById(CategoryQueryServiceByIdRequest) returns (CategoryQueryServiceByIdResponse);
+}
+
+message ProductQueryServiceListRequest {
+  google.protobuf.Empty empty = 1;
+}
+
+message ProductQueryServiceByIdRequest {
+  string id = 1;
+  string keyword = 2;
+}
+
+message ProductQueryServiceByKeywordRequest {
+  string id = 1;
+  string keyword = 2;
+}
+
+
+message ProductQueryServiceListResponse {
+  repeated models.v1.Product products = 1;
+  errors.v1.Error error = 2;
+  google.protobuf.Timestamp timestamp = 3;
+}
+
+message ProductQueryServiceByIdResponse {
+  oneof result {
+    models.v1.Product product = 1;
+    errors.v1.Error error = 2;
+  }
+  google.protobuf.Timestamp timestamp = 3;
+}
+
+message ProductQueryServiceByKeywordResponse {
+  repeated models.v1.Product products = 1;
+  errors.v1.Error error = 2;
+  google.protobuf.Timestamp timestamp = 3;
+}
+
+service ProductQueryService {
+  rpc List(ProductQueryServiceListRequest) returns (ProductQueryServiceListResponse);
+  rpc ById(ProductQueryServiceByIdRequest) returns (ProductQueryServiceByIdResponse);
+  rpc ByKeyword(ProductQueryServiceByKeywordRequest) returns (ProductQueryServiceByKeywordResponse);
+}
