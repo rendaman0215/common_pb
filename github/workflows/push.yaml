@@ -1,0 +1,28 @@
+name: buf-push
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # Buf CLIのインストールなど
+      - uses: bufbuild/buf-setup-action@v1
+      # buf lintの実行
+      - uses: bufbuild/buf-lint-action@v1
+        with:
+          input: "proto"
+      # buf breaking の実行
+      - uses: bufbuild/buf-breaking-action@v1
+        with:
+          input: "proto"
+          # The 'main' branch of the GitHub repository that defines the module.
+          # Note we specify the subdir to compare against.
+          against: "https://github.com/${GITHUB_REPOSITORY}.git#branch=main,ref=HEAD~1,subdir=proto"
+      # BSRにpushする
+      - uses: bufbuild/buf-push-action@v1
+        with:
+          input: "proto"
+          buf_token: ${{ secrets.BUF_TOKEN }}
