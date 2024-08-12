@@ -1,0 +1,113 @@
+syntax = "proto3";
+package pokemon.calc.v1;
+
+// 攻撃ポケモン詳細
+message AttackPoekmon {
+  // 図鑑No
+  int32 dex_no = 1;
+  // フォルムNo
+  int32 form_no = 2;
+  // とくせい
+  string ability = 3;
+  // せいかく
+  string seikaku = 4;
+  // テラスタイプ
+  string teras = 5;
+  // 攻撃の努力値
+  int32 effort_attack = 6;
+  // 特攻の努力値
+  int32 effort_sp_attack = 7;
+  // 状態異常
+  string status = 8;
+  // じゅうでん
+  bool charge = 9;
+}
+
+// 防御ポケモン詳細
+message DeffencePokemon {
+  // 図鑑No
+  int32 dex_no = 1;
+  // フォルムNo
+  int32 form_no = 2;
+  // とくせい
+  string ability = 3;
+  // せいかく
+  string seikaku = 4;
+  // テラスタイプ
+  string teras = 5;
+  // HPの努力値
+  int32 effort_hp = 6;
+  // 防御の努力値
+  int32 effort_defense = 7;
+  // 特防の努力値
+  int32 effort_sp_defense = 8;
+}
+
+// 天気
+enum WEATHER {
+  // 指定なし
+  WEATHER_UNSPECIFIED = 0;
+  // 通常
+  WEATHER_NORMAL = 1;
+  // 晴れ
+  WEATHER_SUNNY = 2;
+  // 雨
+  WEATHER_RAINY = 3;
+  // 雪
+  WEATHER_SNOW = 4;
+  // 砂嵐
+  WEATHER_SANDSTORM = 5;
+}
+
+// フィールド
+enum FIELD {
+  // 指定なし
+  FIELD_UNSPECIFIED = 0;
+  // 通常
+  FIELD_NORMAL = 1;
+  // 電磁波
+  FIELD_ELECTRONIC = 2;
+  // ミスト
+  FIELD_MIST = 3;
+  // グラス
+  FIELD_GRASS = 4;
+  // プラズマ
+  FIELD_PSYCO = 5;
+}
+
+// 環境情報
+message Environment {
+  WEATHER weather = 1;
+  FIELD field = 2;
+}
+
+// 壁情報
+message Wall {
+  bool reflecter = 1;
+  bool light_screen = 2;
+}
+
+// ダメージ計算リクエスト
+message DamageCalcRequest {
+  // 攻撃ポケモン詳細
+  AttackPoekmon attacker = 1;
+  // 防御ポケモン詳細
+  DeffencePokemon defender = 2;
+  // 技名
+  string move = 3;
+  // 環境情報
+  Environment environment = 4;
+  // 壁情報
+  Wall wall = 5;
+}
+
+// ダメージ計算結果
+message DamageCalcResponse {
+  int32 damage = 1;
+}
+
+// ダメージ計算サービス
+service DamageCalcService {
+  // ダメージ計算
+  rpc DamageCalc (DamageCalcRequest) returns (DamageCalcResponse);
+}
